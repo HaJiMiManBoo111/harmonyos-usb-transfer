@@ -1,0 +1,26 @@
+# 默认：文本按 UTF-8 存，检出时统一 LF，避免跨平台 diff 噪音
+* text=auto eol=lf
+
+# ---- 必须保持二进制/原样的文件 ----
+*.exe   binary
+*.ico   binary
+*.png   binary
+*.dll   binary
+*.pdb   binary
+
+# ---- Windows 批处理必须是 CRLF，否则 cmd 解析异常 ----
+*.cmd   text eol=crlf
+*.bat   text eol=crlf
+
+# ---- PowerShell 脚本保持 CRLF（PS 5.1 对 LF+BOM 组合同样能跑，但统一 CRLF 更稳） ----
+*.ps1   text eol=crlf
+
+# ---- C# 源码按文本处理 ----
+*.cs    text diff=csharp
+*.md    text
+*.yml   text eol=lf
+*.json  text eol=lf
+*.manifest text eol=lf
+
+# ---- 语言统计 ----
+*.cs    linguist-language=C#

@@ -1,0 +1,44 @@
+# ---- 编译产物 ----
+/Lingxi.exe
+*.exe
+*.pdb
+*.dll
+*.obj
+*.ilk
+*.exp
+*.lib
+*.res
+
+# ---- 运行期临时文件 ----
+*.log
+*.tmp
+/from-harmony/
+
+# ---- 不随仓库分发的外部依赖 ----
+# hdc.exe 属于华为 DevEco Studio 的一部分，本仓库不打包、不转授权分发。
+# 放在程序目录只是为了方便，绝不提交。
+hdc.exe
+/hdc.exe
+
+# ---- Visual Studio / Rider ----
+.vs/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+bin/
+obj/
+
+# ---- 测试产生的中间件 ----
+/tests/_out/
+/tests/_tmp/
+*.trx
+TestResults/
+
+# ---- 操作系统 ----
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+$RECYCLE.BIN/

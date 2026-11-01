@@ -1,0 +1,79 @@
+name: build
+
+# 只验证「能从源码编译出 Lingxi.exe」。
+# CI 里没有鸿蒙真机，也没有 hdc.exe —— 那两条都不影响编译。
+# 真机验收（tests/*.ps1）请在本机跑，见 docs/BUILD.md。
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Compile on Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show toolchain
+        shell: pwsh
+        run: |
+          $csc = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
+          if (-not (Test-Path $csc)) {
+            Write-Error "csc.exe not found at $csc"
+            exit 1
+          }
+          $fi = Get-Item $csc
+          Write-Host ("csc.exe: {0}  ({1:N0} bytes)  {2}" -f $fi.FullName, $fi.Length, $fi.VersionInfo.FileVersion)
+          Write-Host ("pwsh: {0}" -f $PSVersionTable.PSVersion)
+
+      - name: Build with build.cmd
+        shell: cmd
+        # build.cmd 结尾有 pause，CI 里没有交互控制台会一直挂住。
+        # 从 NUL 重定向 stdin，pause 立刻返回，脚本正常结束。
+        # 显式检查 errorlevel，不让失败被 cmd 的 shell 包装吞掉。
+        run: |
+          build.cmd < NUL
+          if errorlevel 1 exit /b 1
+
+      - name: Verify artifact
+        shell: pwsh
+        run: |
+          $exe = 'Lingxi.exe'
+          if (-not (Test-Path $exe)) {
+            Write-Error "Lingxi.exe not produced"
+            exit 1
+          }
+          $len = (Get-Item $exe).Length
+          Write-Host ("Lingxi.exe size = {0} bytes ({1:N1} KB)" -f $len, ($len / 1KB))
+          # 低于 100 KB 基本说明资源没嵌进去或编译没真正成功
+          if ($len -lt 102400) {
+            Write-Error "Lingxi.exe is suspiciously small ($len bytes < 100 KB)"
+            exit 1
+          }
+          Write-Host "OK"
+
+      - name: Check embedded resources
+        shell: pwsh
+        run: |
+          # 确认图标与清单真的嵌进去了（不是编译时被静默忽略）
+          $bytes = [System.IO.File]::ReadAllBytes('Lingxi.exe')
+          $text = [System.Text.Encoding]::ASCII.GetString($bytes)
+          if ($text -notmatch 'dpiAware') {
+            Write-Error "dpiAware manifest not embedded"
+            exit 1
+          }
+          Write-Host "manifest embedded OK"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lingxi-exe
+          path: Lingxi.exe
+          if-no-files-found: error
+          retention-days: 30
