@@ -155,6 +155,12 @@ cd src
 
 完整说明、依赖清单与常见编译错误见 [docs/BUILD.md](docs/BUILD.md)。
 
+### 关于 CI
+
+`.github/workflows/build.yml` 在 `windows-latest` 上真跑 `build.cmd`，并额外验两件事：产出的 `Lingxi.exe` 必须大于 100 KB（太小说明资源没嵌进去或编译没真正成功）、二进制里必须能搜到 `dpiAware`（说明 manifest 真的嵌进去了）。
+
+它**不跑** `tests/*.ps1` —— 那三个脚本需要一台连着的鸿蒙真机，CI 里没有。
+
 ---
 
 ## 测试
