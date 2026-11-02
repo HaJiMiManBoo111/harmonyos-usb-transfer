@@ -39,7 +39,7 @@ LocalSend 这类工具要求收发双方在同一局域网且能互相直连。�
 
 ## 快速开始
 
-> **不想自己编译？** 到 [Releases](https://github.com/HaJiMiManBoo111/lingxi/releases) 下载 `Lingxi-v0.1.0-win-x64.zip`（约 90 KB），解压即用，无需 .NET 安装。里面**不含 `hdc.exe`**，按下面第 1 步自备。
+> **不想自己编译？** 到 [Releases](https://github.com/HaJiMiManBoo111/lingxi/releases) 下载 `Lingxi-v0.1.1-win-x64.zip`（约 90 KB），解压即用，无需 .NET 安装。里面**不含 `hdc.exe`**，按下面第 1 步自备。
 
 ### 1. 准备 `hdc.exe`
 
