@@ -21,7 +21,7 @@ Windows ↔ 鸿蒙（HarmonyOS PC）双向传文件工具的设计契约与实�
 | `src/HdcCore.cs` | 核心逻辑：设备解析、`Send` / `Pull` / `ListRemote` / `RemoteDirSize`、`hdc.exe` 多路径查找 |
 | `src/Program.cs` | 入口：无参进 GUI，带参走静默模式（`--list` / `--pull`） |
 | `src/MainForm.cs` | 全部界面与布局（手算 `SetBounds`，无设计师文件） |
-| `src/Fluent.cs` | 自绘控件库（`FluentButton` / `FlatProgress` / `CardPanel` / `StatusPill` / `FluentTabs` / `GripBar`）与 DPI 缩放层 `Fluent.S()` |
+| `src/Fluent.cs` | 自绘控件库（`FluentButton` / `FlatProgress` / `CardPanel` / `StatusPill` / `FluentTabs` / `GripBar`）、DPI 缩放层 `Fluent.S()`、速率计 `SpeedMeter` |
 | `res/app.ico`、`res/app.manifest` | 图标（9 档）与 DPI 感知声明 |
 | `tests/verify*.ps1` | 真机验收脚本 |
 

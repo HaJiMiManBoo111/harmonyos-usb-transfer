@@ -822,4 +822,70 @@ namespace Lingxi
             }
         }
     }
+
+    // ================================================================== 速率计
+
+    /// <summary>
+    /// 传输速率计：喂进累计字节与时间戳，算出瞬时速率。
+    /// 用滑动窗口（2 秒）而不是全程平均，避免开头几秒被 hdc 启动开销拖低。
+    /// </summary>
+    internal class SpeedMeter
+    {
+        private const int WindowMs = 2000;
+
+        private long[] _t = new long[64];
+        private long[] _b = new long[64];
+        private int _n;
+        private int _head;
+
+        public void Reset()
+        {
+            _n = 0;
+            _head = 0;
+        }
+
+        /// <summary>喂一个采样点（累计字节），返回当前瞬时速率 B/s；样本不足返回 0。</summary>
+        public double Feed(long bytes, long nowMs)
+        {
+            if (_n > 0)
+            {
+                int last = (_head - 1 + _b.Length) % _b.Length;
+                if (nowMs - _t[last] < 120 && bytes == _b[last])
+                {
+                    return Current(nowMs);
+                }
+            }
+            _t[_head] = nowMs;
+            _b[_head] = bytes;
+            _head = (_head + 1) % _b.Length;
+            if (_n < _b.Length) _n++;
+            return Current(nowMs);
+        }
+
+        /// <summary>把 B/s 格式化成「12.3 MB/s」。0 或负值返回空串。</summary>
+        public static string FormatBps(double bps)
+        {
+            if (bps <= 0.0) return "";
+            if (bps < 1024.0) return bps.ToString("0") + " B/s";
+            if (bps < 1024.0 * 1024.0) return (bps / 1024.0).ToString("0.0") + " KB/s";
+            return (bps / (1024.0 * 1024.0)).ToString("0.0") + " MB/s";
+        }
+
+        private double Current(long nowMs)
+        {
+            if (_n < 2) return 0;
+            int newest = (_head - 1 + _b.Length) % _b.Length;
+            int oldest = newest;
+            for (int i = 0; i < _n; i++)
+            {
+                int idx = (_head - 1 - i + _b.Length * 2) % _b.Length;
+                oldest = idx;
+                if (nowMs - _t[idx] >= WindowMs) break;
+            }
+            long dt = _t[newest] - _t[oldest];
+            long db = _b[newest] - _b[oldest];
+            if (dt <= 0 || db <= 0) return 0;
+            return db * 1000.0 / dt;
+        }
+    }
 }

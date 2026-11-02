@@ -39,6 +39,7 @@ namespace Lingxi
         private ListBox _lstFiles;
         private TextBox _txtLog;
         private FlatProgress _prg;
+        private Label _lblSpeed;
         private Label _lblStatus;
         private Button _btnAddFile;
         private Button _btnAddFolder;
@@ -47,6 +48,10 @@ namespace Lingxi
         private FlowLayoutPanel _flowSend;
 
         private bool _sending;
+        private readonly SpeedMeter _speedSend = new SpeedMeter();
+        private readonly SpeedMeter _speedRecv = new SpeedMeter();
+        private long _speedT0Send;
+        private long _speedT0Recv;
         private bool _dragHot;
         private int _tipIndex = -1;
         private GripBar _gripSend;
@@ -71,6 +76,7 @@ namespace Lingxi
 
         private TextBox _txtRecvLog;
         private FlatProgress _prgRecv;
+        private Label _lblSpeedRecv;
         private Label _lblRecvStatus;
         private FlowLayoutPanel _flowRecv;
 
@@ -89,6 +95,30 @@ namespace Lingxi
 
         private readonly string _localDir;
 
+        /// <summary>
+        /// 设置窗口图标。exe 内嵌图标只影响资源管理器显示，窗体标题栏/任务栏
+        /// 走的是 Form.Icon，不设就一直是 WinForms 默认的彩色方块。
+        /// 优先读同目录 app.ico，其次读 exe 自身内嵌图标。
+        /// </summary>
+        private void SetAppIcon()
+        {
+            try
+            {
+                string baseDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                string icoPath = Path.Combine(baseDir, "app.ico");
+                if (File.Exists(icoPath))
+                {
+                    this.Icon = new Icon(icoPath);
+                    return;
+                }
+                this.Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            }
+            catch (Exception)
+            {
+                // 图标拿不到不影响功能，忽略
+            }
+        }
+
         // ================================================================ 构造
 
         public MainForm()
@@ -97,6 +127,7 @@ namespace Lingxi
 
             this.Text = "灵犀";
             this.AutoScaleMode = AutoScaleMode.None;
+            this.SetAppIcon();
             this.Font = Fluent.Body;
             this.BackColor = Fluent.WindowBg;
             this.ClientSize = new Size(Fluent.S(760), Fluent.S(580));
@@ -205,6 +236,14 @@ namespace Lingxi
             _prg.Value = 0;
             _prg.Style = ProgressBarStyle.Continuous;
 
+            _lblSpeed = new Label();
+            _lblSpeed.Name = "lblSpeed";
+            _lblSpeed.Text = "";
+            _lblSpeed.TextAlign = ContentAlignment.MiddleRight;
+            _lblSpeed.AutoEllipsis = true;
+            _lblSpeed.Font = Fluent.BodyStrong;
+            _lblSpeed.ForeColor = Fluent.Accent;
+
             _lblStatus = new Label();
             _lblStatus.Name = "lblStatus";
             _lblStatus.Text = "就绪。拖入文件后点「发送到鸿蒙桌面」。";
@@ -241,6 +280,7 @@ namespace Lingxi
             _gripSend.Moved += new EventHandler(this.GripSend_Moved);
 
             _pageSend.Controls.AddRange(new Control[] {
+                _lblSpeed,
                 _pillDevice, _lblDevice, _panelDrop, _cardList, _gripSend, _cardLog,
                 _prg, _lblStatus, _flowSend
             });
@@ -342,6 +382,14 @@ namespace Lingxi
             _prgRecv.Value = 0;
             _prgRecv.Style = ProgressBarStyle.Continuous;
 
+            _lblSpeedRecv = new Label();
+            _lblSpeedRecv.Name = "lblSpeedRecv";
+            _lblSpeedRecv.Text = "";
+            _lblSpeedRecv.TextAlign = ContentAlignment.MiddleRight;
+            _lblSpeedRecv.AutoEllipsis = true;
+            _lblSpeedRecv.Font = Fluent.BodyStrong;
+            _lblSpeedRecv.ForeColor = Fluent.Accent;
+
             _lblRecvStatus = new Label();
             _lblRecvStatus.Name = "lblRecvStatus";
             _lblRecvStatus.TextAlign = ContentAlignment.MiddleLeft;
@@ -376,6 +424,7 @@ namespace Lingxi
             _gripRecv.Moved += new EventHandler(this.GripRecv_Moved);
 
             _pageRecv.Controls.AddRange(new Control[] {
+                _lblSpeedRecv,
                 _cmbRemoteDir, _btnRefresh, _lblLocalDir, _cardRemote, _gripRecv, _cardRecvLog,
                 _prgRecv, _lblRecvStatus, _flowRecv
             });
@@ -448,7 +497,7 @@ namespace Lingxi
         {
             if (_pillDevice == null || _lblDevice == null || _panelDrop == null
                 || _cardList == null || _cardLog == null || _lstFiles == null
-                || _txtLog == null || _prg == null || _lblStatus == null
+                || _txtLog == null || _prg == null || _lblStatus == null || _lblSpeed == null
                 || _flowSend == null)
             {
                 return;
@@ -507,7 +556,9 @@ namespace Lingxi
             LayoutCardChild(_txtLog, _cardLog, _cardLog.CaptionHeight);
 
             _prg.SetBounds(ox + pad, oy + prgY, innerW, Fluent.S(8));
-            _lblStatus.SetBounds(ox + pad, oy + statusY, innerW, Fluent.S(22));
+            int speedW = Fluent.S(150);
+            _lblStatus.SetBounds(ox + pad, oy + statusY, innerW - speedW - Fluent.S(8), Fluent.S(22));
+            _lblSpeed.SetBounds(ox + pad + innerW - speedW, oy + statusY, speedW, Fluent.S(22));
             _flowSend.SetBounds(ox + pad, oy + flowY, innerW, flowH);
         }
 
@@ -539,6 +590,7 @@ namespace Lingxi
             if (_cmbRemoteDir == null || _btnRefresh == null || _lblLocalDir == null
                 || _cardRemote == null || _cardRecvLog == null || _lvRemote == null
                 || _txtRecvLog == null || _prgRecv == null || _lblRecvStatus == null
+                || _lblSpeedRecv == null
                 || _flowRecv == null)
             {
                 return;
@@ -591,7 +643,9 @@ namespace Lingxi
             LayoutCardChild(_txtRecvLog, _cardRecvLog, _cardRecvLog.CaptionHeight);
 
             _prgRecv.SetBounds(ox + pad, oy + prgY, innerW, Fluent.S(8));
-            _lblRecvStatus.SetBounds(ox + pad, oy + statusY, innerW, Fluent.S(22));
+            int speedW2 = Fluent.S(150);
+            _lblRecvStatus.SetBounds(ox + pad, oy + statusY, innerW - speedW2 - Fluent.S(8), Fluent.S(22));
+            _lblSpeedRecv.SetBounds(ox + pad + innerW - speedW2, oy + statusY, speedW2, Fluent.S(22));
             _flowRecv.SetBounds(ox + pad, oy + flowY, innerW, flowH);
         }
 
@@ -1119,6 +1173,9 @@ namespace Lingxi
             _tipIndex = -1;
             _prg.Style = ProgressBarStyle.Continuous;
             _prg.Value = 0;
+            _lblSpeed.Text = "";
+            _speedSend.Reset();
+            _speedT0Send = 0L;
             SetStatus("已清空。");
         }
 
@@ -1144,6 +1201,9 @@ namespace Lingxi
 
             _prg.Style = ProgressBarStyle.Continuous;
             _prg.Value = 0;
+            _speedSend.Reset();
+            _speedT0Send = 0L;
+            _lblSpeed.Text = "";
             SetStatus(string.Format("正在发送 {0} 项到鸿蒙桌面…", paths.Length));
             AppendLog(string.Format("[UI] 开始发送 {0} 项 -> {1}", paths.Length, HdcCore.RemoteDesktop));
 
@@ -1186,7 +1246,31 @@ namespace Lingxi
         // onProgress：可能在后台线程，也可能在 UI 线程，统一 marshal
         private void OnProgress(long done, long total)
         {
-            this.UiInvoke(delegate() { ApplyProgressTo(_prg, done, total); });
+            string sp = this.TickSpeed(_speedSend, ref _speedT0Send, done);
+            this.UiInvoke(delegate()
+            {
+                ApplyProgressTo(_prg, done, total);
+                if (_lblSpeed != null && sp != null)
+                {
+                    _lblSpeed.Text = sp;
+                }
+            });
+        }
+
+        /// <summary>喂速率计并格式化成「12.3 MB/s」。返回 null 表示样本不足、暂不刷新。</summary>
+        private string TickSpeed(SpeedMeter m, ref long t0, long done)
+        {
+            long now = Environment.TickCount;
+            if (t0 == 0L)
+            {
+                t0 = now;
+            }
+            double bps = m.Feed(done, now - t0);
+            if (bps <= 0.0)
+            {
+                return null;
+            }
+            return SpeedMeter.FormatBps(bps);
         }
 
         // onLog：同上
@@ -1264,6 +1348,10 @@ namespace Lingxi
             }
             SetStatus(msg);
             _lblStatus.ForeColor = ok ? Color.FromArgb(0, 100, 0) : Color.Firebrick;
+            if (ok && result != null && result.TotalBytes > 0L && result.ElapsedMs > 0L)
+            {
+                _lblSpeed.Text = HdcCore.FormatSpeed(result.TotalBytes, result.ElapsedMs) + " 平均";
+            }
 
             if (result != null)
             {
@@ -1594,6 +1682,9 @@ namespace Lingxi
 
             _prgRecv.Style = ProgressBarStyle.Continuous;
             _prgRecv.Value = 0;
+            _speedRecv.Reset();
+            _speedT0Recv = 0L;
+            _lblSpeedRecv.Text = "";
             SetRecvStatus(string.Format("正在接收 {0} 项到 {1} …", _pullCount, _localDir), false);
             AppendRecvLog(string.Format("[UI] 开始接收 {0} 项 -> {1}", _pullCount, _localDir));
 
@@ -1633,7 +1724,15 @@ namespace Lingxi
 
         private void OnRecvProgress(long done, long total)
         {
-            this.UiInvoke(delegate() { ApplyProgressTo(_prgRecv, done, total); });
+            string sp = this.TickSpeed(_speedRecv, ref _speedT0Recv, done);
+            this.UiInvoke(delegate()
+            {
+                ApplyProgressTo(_prgRecv, done, total);
+                if (_lblSpeedRecv != null && sp != null)
+                {
+                    _lblSpeedRecv.Text = sp;
+                }
+            });
         }
 
         private void OnRecvLog(string line)
@@ -1668,6 +1767,10 @@ namespace Lingxi
             if (ok)
             {
                 SetRecvStatus(msg, true);
+                if (result != null && result.TotalBytes > 0L && result.ElapsedMs > 0L)
+                {
+                    _lblSpeedRecv.Text = HdcCore.FormatSpeed(result.TotalBytes, result.ElapsedMs) + " 平均";
+                }
             }
             else
             {

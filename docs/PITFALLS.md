@@ -296,6 +296,58 @@ D:\本地目标\子目录\文件...
 
 ---
 
+## 附加坑（续）
+
+### 8. exe 内图标正确，但窗口标题栏/任务栏仍是 WinForms 默认彩色方块
+
+`/win32icon:` 只决定**资源管理器里显示的图标**。窗口标题栏和任务栏读的是 **`Form.Icon` 属性**，两者完全独立 —— 不设 `this.Icon` 就一直是 WinForms 那个蓝红绿彩色方块。
+
+**判据**：`Icon.ExtractAssociatedIcon(exe)` 解出来是对的（深色圆环），但程序窗口左上角是彩色方块 ⇒ 就是这个坑。
+
+**修法**：在构造函数里显式设一次。
+
+```csharp
+private void SetAppIcon()
+{
+    try
+    {
+        string baseDir = Path.GetDirectoryName(
+            System.Reflection.Assembly.GetExecutingAssembly().Location);
+        string icoPath = Path.Combine(baseDir, "app.ico");
+        if (File.Exists(icoPath))
+        {
+            this.Icon = new Icon(icoPath);
+            return;
+        }
+        this.Icon = Icon.ExtractAssociatedIcon(
+            System.Reflection.Assembly.GetExecutingAssembly().Location);
+    }
+    catch (Exception) { /* 图标设不上不影响功能 */ }
+}
+```
+
+优先读同目录 `app.ico`（画质最好，9 档全在），回退到从 exe 里解内嵌图标（便携部署时 exe 单独拷走也能用）。
+
+**顺带更正一条流传很广的说法**：快捷方式的 `IconLocation` 写成 `<exe>,0` 并不会导致图标错乱。实测 A/B 对照 —— `app.ico,0` 与 `Lingxi.exe,0` 解出来的像素完全一致（中心 RGB 都是 `(32,41,78)`）。真正的坑是上面那条 `Form.Icon`。
+
+### 9. 速率计用全程平均会被启动开销拖低
+
+传输刚起来的前 1–2 秒，`hdc` 还在建通道、设备侧还在建目录，累计字节几乎不动。如果速率按「总字节 ÷ 总耗时」算，头几秒会显示成 2–3 MB/s，之后才慢慢爬回 25 MB/s —— 看起来像是速度不稳，其实是算法问题。
+
+**修法**：用**滑动窗口**（本项目取 2 秒）而不是全程平均。
+
+```csharp
+private const int WindowMs = 2000;
+// 环形缓冲 64 槽，只保留窗口内的采样点
+// Current(): 从最新点往回扫，找到第一个超出窗口的点作为 oldest，用 (db / dt) 算瞬时速率
+```
+
+另外要**抑制重复采样**：`Feed()` 里若距上次采样不足 120ms 且字节数没变，直接返回当前值，不写新样本 —— 否则轮询频率高时环形缓冲会被同一批数据灌满，窗口失效。
+
+传输结束再把全程平均贴上去（本项目显示为 `25.3 MB/s 平均`），瞬时与平均两个口径都给到用户。
+
+---
+
 ## 快速排查清单
 
 遇到问题时按这个顺序过一遍：
@@ -312,3 +364,5 @@ D:\本地目标\子目录\文件...
 | Git Bash 里编译报 CS1504 / CS2001 | `MSYS_NO_PATHCONV=1` + `cd src`（第 5 条） |
 | 拉下来的目录多套了一层 | hdc 的固有行为（第 6 条） |
 | 测试夹具莫名消失 | `/data/local/tmp/` 被清理（第 7 条） |
+| 窗口标题栏/任务栏图标不对 | `Form.Icon` 没设，与 `win32icon` 无关（第 8 条） |
+| 速率开头显示很低 | 用了全程平均，改滑动窗口（第 9 条） |
