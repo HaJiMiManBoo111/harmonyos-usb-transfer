@@ -1,5 +1,7 @@
 # 灵犀 / Lingxi
 
+> **HarmonyOS USB Transfer** — transfer files between Windows and HarmonyOS PC over a USB cable (hdc), no LAN required.
+
 **Windows ↔ 鸿蒙电脑（HarmonyOS PC）双向传文件工具，走 hdc 数据线，不依赖局域网。**
 
 插上数据线，把文件拖进窗口，就传过去了。反向也能浏览鸿蒙目录并拉回来。
@@ -39,7 +41,7 @@ LocalSend 这类工具要求收发双方在同一局域网且能互相直连。�
 
 ## 快速开始
 
-> **不想自己编译？** 到 [Releases](https://github.com/HaJiMiManBoo111/lingxi/releases) 下载 `Lingxi-v0.1.1-win-x64.zip`（约 90 KB），解压即用，无需 .NET 安装。里面**不含 `hdc.exe`**，按下面第 1 步自备。
+> **不想自己编译？** 到 [Releases](https://github.com/HaJiMiManBoo111/harmonyos-usb-transfer/releases) 下载 `Lingxi-v0.1.1-win-x64.zip`（约 90 KB），解压即用，无需 .NET 安装。里面**不含 `hdc.exe`**，按下面第 1 步自备。
 
 ### 1. 准备 `hdc.exe`
 
