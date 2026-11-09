@@ -1,0 +1,107 @@
+=== ls -l === (hdc shell "ls -l /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow" rc=0)
+total 1142784
+-rw-r--r-- 1 20020218 20020218 120931 2026-11-08 20:01 e2e-payload (1).bin
+-rw-r--r-- 1 20020218 20020218 120931 2026-11-08 20:26 e2e-payload (2).bin
+-rw-r--r-- 1 20020218 20020218 120931 2026-11-08 20:35 e2e-payload (3).bin
+-rw-r--r-- 1 20020218 20020218 120931 2026-11-08 20:40 e2e-payload (4).bin
+-rw-r--r-- 1 20020218 20020218 120931 2026-11-08 20:43 e2e-payload (5).bin
+-rw-r--r-- 1 20020218 20020218 120931 2026-11-08 20:46 e2e-payload (6).bin
+-rw-r--r-- 1 20020218 20020218 120931 2026-11-08 20:47 e2e-payload (7).bin
+-rw-r--r-- 1 20020218 20020218 120931 2026-11-08 20:49 e2e-payload (8).bin
+-rw-r--r-- 1 20020218 20020218 120931 2026-11-08 20:00 e2e-payload.bin
+
+=== md5sum === (hdc shell "md5sum /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/*" rc=0)
+bdda853c2d80ed297e77b66f576d962c  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (1).bin
+bdda853c2d80ed297e77b66f576d962c  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (2).bin
+bdda853c2d80ed297e77b66f576d962c  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (3).bin
+bdda853c2d80ed297e77b66f576d962c  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (4).bin
+bdda853c2d80ed297e77b66f576d962c  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (5).bin
+bdda853c2d80ed297e77b66f576d962c  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (6).bin
+bdda853c2d80ed297e77b66f576d962c  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (7).bin
+bdda853c2d80ed297e77b66f576d962c  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (8).bin
+bdda853c2d80ed297e77b66f576d962c  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload.bin
+
+=== sha256sum === (hdc shell "sha256sum /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/*" rc=0)
+5bb38cd20a81e68ff6137d83a58d5a2ea043eeb59d991181f7922d77d274dcbe  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (1).bin
+5bb38cd20a81e68ff6137d83a58d5a2ea043eeb59d991181f7922d77d274dcbe  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (2).bin
+5bb38cd20a81e68ff6137d83a58d5a2ea043eeb59d991181f7922d77d274dcbe  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (3).bin
+5bb38cd20a81e68ff6137d83a58d5a2ea043eeb59d991181f7922d77d274dcbe  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (4).bin
+5bb38cd20a81e68ff6137d83a58d5a2ea043eeb59d991181f7922d77d274dcbe  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (5).bin
+5bb38cd20a81e68ff6137d83a58d5a2ea043eeb59d991181f7922d77d274dcbe  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (6).bin
+5bb38cd20a81e68ff6137d83a58d5a2ea043eeb59d991181f7922d77d274dcbe  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (7).bin
+5bb38cd20a81e68ff6137d83a58d5a2ea043eeb59d991181f7922d77d274dcbe  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (8).bin
+5bb38cd20a81e68ff6137d83a58d5a2ea043eeb59d991181f7922d77d274dcbe  /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload.bin
+
+=== stat === (hdc shell "stat /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/*" rc=0)
+  File: /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (1).bin
+  Size: 120931	 Blocks: 248	 IO Blocks: 512	 regular file
+Device: 10466h/66662d	 Inode: 277197	 Links: 1	 Device type: 0,0
+Access: (0644/-rw-r--r--)	Uid: (20020218/20020218)	Gid: (20020218/20020218)
+Access: 2026-11-08 20:01:57.863498125 +0800
+Modify: 2026-11-08 20:01:57.863498125 +0800
+Change: 2026-11-08 20:01:57.863498125 +0800
+  File: /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (2).bin
+  Size: 120931	 Blocks: 248	 IO Blocks: 512	 regular file
+Device: 10466h/66662d	 Inode: 508852	 Links: 1	 Device type: 0,0
+Access: (0644/-rw-r--r--)	Uid: (20020218/20020218)	Gid: (20020218/20020218)
+Access: 2026-11-08 20:26:33.199502813 +0800
+Modify: 2026-11-08 20:26:33.207494375 +0800
+Change: 2026-11-08 20:26:33.207494375 +0800
+  File: /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (3).bin
+  Size: 120931	 Blocks: 248	 IO Blocks: 512	 regular file
+Device: 10466h/66662d	 Inode: 294930	 Links: 1	 Device type: 0,0
+Access: (0644/-rw-r--r--)	Uid: (20020218/20020218)	Gid: (20020218/20020218)
+Access: 2026-11-08 20:35:36.275495625 +0800
+Modify: 2026-11-08 20:35:36.275495625 +0800
+Change: 2026-11-08 20:35:36.275495625 +0800
+  File: /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (4).bin
+  Size: 120931	 Blocks: 248	 IO Blocks: 512	 regular file
+Device: 10466h/66662d	 Inode: 294638	 Links: 1	 Device type: 0,0
+Access: (0644/-rw-r--r--)	Uid: (20020218/20020218)	Gid: (20020218/20020218)
+Access: 2026-11-08 20:40:02.887508125 +0800
+Modify: 2026-11-08 20:40:02.891498125 +0800
+Change: 2026-11-08 20:40:02.891498125 +0800
+  File: /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (5).bin
+  Size: 120931	 Blocks: 248	 IO Blocks: 512	 regular file
+Device: 10466h/66662d	 Inode: 296568	 Links: 1	 Device type: 0,0
+Access: (0644/-rw-r--r--)	Uid: (20020218/20020218)	Gid: (20020218/20020218)
+Access: 2026-11-08 20:43:55.675495938 +0800
+Modify: 2026-11-08 20:43:55.675495938 +0800
+Change: 2026-11-08 20:43:55.675495938 +0800
+  File: /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (6).bin
+  Size: 120931	 Blocks: 248	 IO Blocks: 512	 regular file
+Device: 10466h/66662d	 Inode: 558724	 Links: 1	 Device type: 0,0
+Access: (0644/-rw-r--r--)	Uid: (20020218/20020218)	Gid: (20020218/20020218)
+Access: 2026-11-08 20:46:07.651495782 +0800
+Modify: 2026-11-08 20:46:07.655500000 +0800
+Change: 2026-11-08 20:46:07.655500000 +0800
+  File: /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (7).bin
+  Size: 120931	 Blocks: 248	 IO Blocks: 512	 regular file
+Device: 10466h/66662d	 Inode: 193320	 Links: 1	 Device type: 0,0
+Access: (0644/-rw-r--r--)	Uid: (20020218/20020218)	Gid: (20020218/20020218)
+Access: 2026-11-08 20:47:41.987495157 +0800
+Modify: 2026-11-08 20:47:41.987495157 +0800
+Change: 2026-11-08 20:47:41.987495157 +0800
+  File: /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload (8).bin
+  Size: 120931	 Blocks: 248	 IO Blocks: 512	 regular file
+Device: 10466h/66662d	 Inode: 558575	 Links: 1	 Device type: 0,0
+Access: (0644/-rw-r--r--)	Uid: (20020218/20020218)	Gid: (20020218/20020218)
+Access: 2026-11-08 20:49:09.587495938 +0800
+Modify: 2026-11-08 20:49:09.591497500 +0800
+Change: 2026-11-08 20:49:09.591497500 +0800
+  File: /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload.bin
+  Size: 120931	 Blocks: 248	 IO Blocks: 512	 regular file
+Device: 10466h/66662d	 Inode: 180940	 Links: 1	 Device type: 0,0
+Access: (0644/-rw-r--r--)	Uid: (20020218/20020218)	Gid: (20020218/20020218)
+Access: 2026-11-08 20:00:34.695498594 +0800
+Modify: 2026-11-08 20:00:34.695498594 +0800
+Change: 2026-11-08 20:00:34.695498594 +0800
+
+=== head -3 === (hdc shell "head -n 3 /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload.bin" rc=0)
+HARMONY-EOF-DFTR-PAYLOAD
+line 00000: 
+line 00001: x
+
+=== tail -2 === (hdc shell "tail -n 2 /data/app/el2/100/base/com.deskflow.ohospoc/haps/entry/files/Deskflow/e2e-payload.bin" rc=0)
+
+END-OF-PAYLOAD

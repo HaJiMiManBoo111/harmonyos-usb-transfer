@@ -1,0 +1,5 @@
+[SEE ALSO]
+flux(1), flux-core(1)
+
+All documentation is on the web, so please point your browser at
+<https://github.com/flux/flux/wiki> and surf away.
