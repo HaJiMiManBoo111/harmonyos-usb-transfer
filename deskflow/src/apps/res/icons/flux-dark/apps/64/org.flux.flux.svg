@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fluxBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF4E72"/>
+      <stop offset="1" stop-color="#FF8A32"/>
+    </linearGradient>
+    <linearGradient id="fluxTile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FC6A45"/>
+      <stop offset="1" stop-color="#F1472F"/>
+    </linearGradient>
+    <clipPath id="fluxClip">
+      <rect x="2" y="2" width="60" height="60" rx="14"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#fluxClip)">
+    <rect x="2" y="2" width="60" height="60" fill="url(#fluxBg)"/>
+    <ellipse cx="32" cy="1" rx="34" ry="17" fill="#FFFFFF" opacity="0.13"/>
+  </g>
+  <rect x="10" y="26.5" width="44" height="22" rx="7" fill="#7A2E22" opacity="0.18"/>
+  <rect x="10" y="25" width="44" height="22" rx="7" fill="#FDFDFD"/>
+  <circle cx="29" cy="36" r="3.4" fill="#EDEDED"/>
+  <rect x="34.5" y="29" width="15.5" height="14" rx="1" fill="url(#fluxTile)" stroke="#8A3324" stroke-width="0.7"/>
+</svg>

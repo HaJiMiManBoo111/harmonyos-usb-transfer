@@ -1,0 +1,78 @@
+/*
+ * Copyright (c) 2025 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * 说明：真实签名信息（证书 .cer / profile .p7b / 密钥库 .p12 及密码）存放在用户主目录
+ * `~/.ohos/config/` 下，**不会**提交到 Git 仓库，也不应出现在本文件中。
+ * 每位开发者用 DevEco Studio 打开工程后，在 File → Project Structure → Signing Configs
+ * 里勾选 "Automatically generate signature" 自行生成并绑定到本机，
+ * DevEco 会在本地把 signingConfigs 写回本文件（仅本机可见，若你看到签名段出现，
+ * 请在提交前删除，或把本文件加入 .git/info/exclude 并维护本地副本）。
+ */
+{
+  "app": {
+    "products": [
+      {
+        "name": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "targetSdkVersion": "6.0.0(20)",
+        "runtimeOS": "HarmonyOS",
+        "buildOption": {
+          "strictMode": {
+            "caseSensitiveCheck": true,
+            "useNormalizedOHMUrl": true
+          }
+        }
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug"
+      },
+      {
+        "name": "release"
+      }
+    ],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\Administrator\\.ohos\\config\\default_deskflow-harmonyos-main_GJAPIsQhzWTRXcB49XxTYG3eYmqNNnnj-B92uPToGnk=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001A7089306AB8162FCE2988CEF788DA7B258C06A97F666DE28DED1462B46306EABD7E0AE9790738",
+          "profile": "C:\\Users\\Administrator\\.ohos\\config\\default_deskflow-harmonyos-main_GJAPIsQhzWTRXcB49XxTYG3eYmqNNnnj-B92uPToGnk=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\Administrator\\.ohos\\config\\default_deskflow-harmonyos-main_GJAPIsQhzWTRXcB49XxTYG3eYmqNNnnj-B92uPToGnk=.p12",
+          "storePassword": "0000001ACB8DFC9A1C70DBCA3A6DF93A18696476CD68973D910E47EBDA89E9437D3DA09C282619CFECCA"
+        }
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}
