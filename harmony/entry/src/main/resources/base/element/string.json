@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "Flux HarmonyOS client"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "Flux client"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Flux"
+    }
+  ]
+}
